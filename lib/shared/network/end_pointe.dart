@@ -2,4 +2,4 @@
 
 const LOGIN = 'login';
 const REGISTER = 'register';
-const Home = 'home';
+const HOME = 'home';
