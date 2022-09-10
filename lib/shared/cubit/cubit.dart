@@ -19,7 +19,7 @@ class ShopCupit extends Cubit<ShopStates> {
   int currentIndex = 0;
 
   List<Widget> bottomScreens = [
-    const HomeScreen(),
+     HomeScreen(),
     const Categories(),
     const Favorits(),
     const Setting(),
@@ -30,16 +30,37 @@ class ShopCupit extends Cubit<ShopStates> {
     emit(ShopChangeBottomNaveState());
   }
 
-   HomeModel? homeModel;
+   HomeModel? hjomeModel;
+
+  void GetHomeData() {
+    emit(ShopLoadingHomeDataState());
+
+    DioHelper.getData(url: HOME, token: token).then((value) {
+      hjomeModel = HomeModel.fromJson(value.data);
+      print(hjomeModel!.status);
+      emit(ShopSuccessHomeDataState());
+      printFullText(hjomeModel!.data!.banners![0].image.toString());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ShopErrorHomeDataState());
+    });
+  }
+
+
+  HomeModel? homeModel;
 
   void getHomeData() {
     emit(ShopLoadingHomeDataState());
-
-    DioHelper.getData(url: Home, token: token).then((value) {
+    DioHelper.getData(
+      url: HOME,
+      token: token,
+    ).then((value) {
       homeModel = HomeModel.fromJson(value.data);
+      //printFullText(homeModel.data.banners.toString());
       print(homeModel!.status);
+      print(token);
+
       emit(ShopSuccessHomeDataState());
-      printFullText(homeModel!.data!.banners![0].image.toString());
     }).catchError((error) {
       print(error.toString());
       emit(ShopErrorHomeDataState());
