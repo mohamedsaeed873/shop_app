@@ -7,6 +7,7 @@ import 'package:shop_app/shared/cubit/state.dart';
 import 'package:shop_app/shared/network/end_pointe.dart';
 import 'package:shop_app/shared/network/remot/dio_helper.dart';
 
+import '../../model/Category/category_model.dart';
 import '../../modules/Categories/categories_screen.dart';
 import '../../modules/Favorites/favorite_screen.dart';
 import '../../modules/Settings/setting-screen.dart';
@@ -19,8 +20,8 @@ class ShopCupit extends Cubit<ShopStates> {
   int currentIndex = 0;
 
   List<Widget> bottomScreens = [
-     HomeScreen(),
-    const Categories(),
+    ProductsScreen(),
+     Categories(),
     const Favorits(),
     const Setting(),
   ];
@@ -28,22 +29,6 @@ class ShopCupit extends Cubit<ShopStates> {
   void ChangeBottom(int index) {
     currentIndex = index;
     emit(ShopChangeBottomNaveState());
-  }
-
-   HomeModel? hjomeModel;
-
-  void GetHomeData() {
-    emit(ShopLoadingHomeDataState());
-
-    DioHelper.getData(url: HOME, token: token).then((value) {
-      hjomeModel = HomeModel.fromJson(value.data);
-      print(hjomeModel!.status);
-      emit(ShopSuccessHomeDataState());
-      printFullText(hjomeModel!.data!.banners![0].image.toString());
-    }).catchError((error) {
-      print(error.toString());
-      emit(ShopErrorHomeDataState());
-    });
   }
 
 
@@ -64,6 +49,26 @@ class ShopCupit extends Cubit<ShopStates> {
     }).catchError((error) {
       print(error.toString());
       emit(ShopErrorHomeDataState());
+    });
+  }
+
+  CategoriesModel? categoriesModel;
+
+  void getCategories() {
+    emit(ShopLoadingCategoriesState());
+    DioHelper.getData(
+      url: GetCategories,
+      token: token,
+    ).then((value) {
+      categoriesModel = CategoriesModel.fromJson(value.data);
+      //printFullText(homeModel.data.banners.toString());
+      print(categoriesModel!.status);
+      print(token);
+
+      emit(ShopSuccessCategoriesState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ShopErrorCategoriesState());
     });
   }
 }
