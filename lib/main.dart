@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/ShopApp/shopLayout.dart';
@@ -22,37 +21,23 @@ void main() async {
   );
   DioHelper.init();
   await CacheHelper.init();
-  //Widget widget;
-
-   /* bool onBoarding = CacheHelper.getData(key: 'onBoarding');
-    String token = CacheHelper.getData(key: 'token');
-
-
-    if (onBoarding != null) {
-      if (token != null) {
-      widget =  ShopLayout();
-      } else {
-        widget =  LoginScreen();
-      }
-    } else {
-      widget = OnBoarding();
-    }*/
-
 
   runApp(MyApp());
-  //startWidget: widget
 }
 
 class MyApp extends StatelessWidget {
   //final Widget startWidget;
 
- // MyApp({required this.startWidget});
+  // MyApp({required this.startWidget});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (BuildContext context) => ShopCupit()..getHomeData()),
+          BlocProvider(
+              create: (BuildContext context) => ShopCupit()
+                ..getHomeData()
+                ..getCategories()),
         ],
         child: BlocConsumer<ShopCupit, ShopStates>(
           listener: (context, state) {},
@@ -64,7 +49,6 @@ class MyApp extends StatelessWidget {
               darkTheme: darkTheme,
               themeMode: ThemeMode.light,
               home: StartWidget(),
-
             );
           },
         ));
