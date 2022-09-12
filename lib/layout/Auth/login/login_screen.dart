@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/Auth/register/register.dart';
 import 'package:shop_app/layout/ShopApp/shopLayout.dart';
-import 'package:shop_app/modules/Favorites/favorite_screen.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/components/conest.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
