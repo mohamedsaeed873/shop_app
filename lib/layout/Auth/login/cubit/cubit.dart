@@ -1,57 +1,45 @@
+// ignore_for_file: unnecessary_import, camel_case_types, non_constant_identifier_names, duplicate_ignore
 
-
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:shop_app/layout/Auth/login/cubit/state.dart';
-import 'package:shop_app/layout/ShopApp/shopLayout.dart';
-import 'package:shop_app/model/LoginModel/shopLoginModel.dart';
-import 'package:shop_app/shared/network/end_pointe.dart';
-import 'package:shop_app/shared/network/remot/dio_helper.dart';
 
-import '../../../../shared/components/components.dart';
-import '../../../../shared/network/local/cache_helper.dart';
+import '../../../../model/LoginModel/shopLoginModel.dart';
+import '../../../../shared/network/end_pointe.dart';
+import '../../../../shared/network/remot/dio_helper.dart';
 
-class ShopLoginCubit extends Cubit<ShopLoginStates> {
-  ShopLoginCubit() : super(ShopLoginInitialStates());
+class loginCubit extends Cubit<LoginStates> {
+  loginCubit() : super(ShopLoginInitialStates());
+  static loginCubit get(context) => BlocProvider.of(context);
 
-  static ShopLoginCubit get(context) => BlocProvider.of(context);
-  ShopLoginModel? loginModel;
+  LoginModel? loginModel;
 
-  void userLogin({
-    required String email,
-    required String password,
-    required BuildContext context,
-  }) {
+  void UserLogin({required String email, required String password}) {
     emit(ShopLoginLoadingStates());
-    DioHelper.postData(url: LOGIN, data: {
-      'email': email,
-      'password': password,
-    }).then((value) {
-      // ignore: avoid_print
-      print(value.data);
-     navigateToFinsh(context, ShopLayout());
-      CacheHelper.savaData(key: 'token', value: value.data!.token);
-
-      loginModel = ShopLoginModel.fromJson(value.data);
+    DioHelper.postData(
+      url: LOGIN,
+      data: {
+        'email': email,
+        'password': password,
+      },
+    ).then((value) {
+      loginModel = LoginModel.fromJson(value.data);
       emit(ShopLoginSuccessStates(loginModel!));
     }).catchError((error) {
-      // ignore: avoid_print
-      print(error.toString());
       emit(ShopLoginErrorStates(error.toString()));
     });
   }
 
   IconData suffix = Icons.visibility_outlined;
-
-  bool ispassword = true;
+  bool isPassword = true;
 
   // ignore: non_constant_identifier_names
-  void ChangePasswordVisibility() {
-    ispassword = !ispassword;
-
+  void ChangePassword() {
+    isPassword = !isPassword;
     suffix =
-        ispassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
+    isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
+
     emit(ShopLoginChangePasswordVisibilityStates());
   }
 }

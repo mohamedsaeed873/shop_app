@@ -87,7 +87,6 @@ class Register extends StatelessWidget {
                           ),
                           defaultTextFormField(
                             controller: nameController,
-                            type: TextInputType.name,
                             validate: (String? val) {
                               if (val!.isEmpty) {
                                 return 'please enter your User Name';
@@ -97,13 +96,14 @@ class Register extends StatelessWidget {
                             },
                             label: "User Name",
                             prefix: Icons.person,
+                            keyboardType:  TextInputType.name,
+                            onSubmit: (val) {  },
                           ),
                           const SizedBox(
                             height: 20.0,
                           ),
                           defaultTextFormField(
                             controller: emailController,
-                            type: TextInputType.emailAddress,
                             validate: (String? val) {
                               if (val!.isEmpty) {
                                 return 'please enter your emailAddress';
@@ -113,6 +113,8 @@ class Register extends StatelessWidget {
                             },
                             label: "Email Address",
                             prefix: Icons.email_outlined,
+                            keyboardType: TextInputType.emailAddress,
+                            onSubmit: (val) {  },
                           ),
                           const SizedBox(
                             height: 20.0,
@@ -121,7 +123,7 @@ class Register extends StatelessWidget {
                             controller: passwordController,
                             isPassword:
                                 ShopRegisterCubit.get(context).ispassword,
-                            type: TextInputType.visiblePassword,
+
                             onSubmit: (val) {},
                             validate: (String? val) {
                               if (val!.isEmpty) {
@@ -136,14 +138,14 @@ class Register extends StatelessWidget {
                                   .ChangePasswordVisibility();
                             },
                             suffix: ShopRegisterCubit.get(context).suffix,
-                            prefix: Icons.lock,
+                            prefix: Icons.key,
+                            keyboardType: TextInputType.visiblePassword,
                           ),
                           const SizedBox(
                             height: 30,
                           ),
                           defaultTextFormField(
                             controller: phoneController,
-                            type: TextInputType.phone,
                             validate: (String? val) {
                               if (val!.isEmpty) {
                                 return 'please enter your PhoneNumber';
@@ -153,26 +155,30 @@ class Register extends StatelessWidget {
                             },
                             label: "Phone Number",
                             prefix: Icons.phone,
+                            onSubmit: (val) {  },
+                            keyboardType: TextInputType.phone,
                           ),
                           const SizedBox(
                             height: 20.0,
                           ),
                           ConditionalBuilder(
                             condition: state is! ShopRegisterLoadingStates,
-                            builder: (context) => defaultButton(
-                                function: () {
-                                  if (formKey.currentState!.validate()) {
-                                    ShopRegisterCubit.get(context).userRegister(
-                                      email: emailController.text,
-                                      password: passwordController.text,
-                                      name: nameController.text,
-                                      phone: phoneController.text,
-                                      context: context,
-                                    );
-                                  }
-                                },
-                                isUpperCase: true,
-                                text: 'REGISTER'),
+                            builder: (context) => Center(
+                              child: defaultMaterialButton(
+                                  function: () {
+                                    if (formKey.currentState!.validate()) {
+                                      ShopRegisterCubit.get(context).userRegister(
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        name: nameController.text,
+                                        phone: phoneController.text,
+                                        context: context,
+                                      );
+                                    }
+                                  },
+                                  isUpperCase: true,
+                                  text: 'REGISTER'),
+                            ),
                             fallback: (context) => const Center(
                               child: CircularProgressIndicator(
                                 color: defaultColor,

@@ -12,7 +12,7 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates>{
   ShopRegisterCubit() : super(ShopRegisterInitialStates());
 
   static ShopRegisterCubit get(context)=>BlocProvider.of(context);
-  ShopLoginModel? registerModel;
+  LoginModel? registerModel;
 
   void userRegister({
     required String name,
@@ -34,7 +34,7 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates>{
       // ignore: avoid_print
       print(value.data);
       navigateToFinsh(context, LoginScreen());
-      registerModel= ShopLoginModel.fromJson(value.data);
+      registerModel= LoginModel.fromJson(value.data);
       emit(ShopRegisterSuccessStates(registerModel!));
     }).catchError((error){
       // ignore: avoid_print

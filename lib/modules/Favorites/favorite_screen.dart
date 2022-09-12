@@ -4,10 +4,10 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/shared/cubit/cubit.dart';
+import 'package:shop_app/shared/cubit/state.dart';
+import 'package:shop_app/shared/styles/colors.dart';
 
 import '../../model/Favorite/favoriteModel.dart';
-import '../../shared/cubit/state.dart';
-import '../../shared/styles/colors.dart';
 
 class FavoritesScreen extends StatelessWidget {
   @override
@@ -15,104 +15,166 @@ class FavoritesScreen extends StatelessWidget {
     return BlocConsumer<ShopCupit, ShopStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        return ListView.builder(
-          physics: BouncingScrollPhysics(),
-            itemCount: ShopCupit.get(context).favoritesModel!.data!.data!.length,
-            itemBuilder: (context,index){
-          return BuildListProduct(context);
-        });
-      },
-    );
-  }
-}
-
-Widget BuildListProduct( BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.all(10.0),
-    child: Card(
-      elevation: 20,
-      child: Container(
-        width: double.infinity,
-        height: 120,
-        child: Stack(
-          children: [
-            Row(
-              children: [
-                Container(
-                  height: 120,
-                  width: 120,
-                  child: Image(
-                    image: NetworkImage(""),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Expanded(
+        FavoritesModel? favoritesModel = ShopCupit.get(context).favoritesModel;
+        return ShopCupit.get(context).favoritesModel!.data!.data!.isEmpty
+            ? Scaffold(
+                body: Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Icon(
+                        Icons.favorite_border,
+                        size: 70,
+                        color: Colors.greenAccent,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Text(
-                        'Apple iPhone 12 Pro Max 256GB 6 GB RAM, Pacific Blue ',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 14.0, height: 1.3),
+                        'Your Favorites is empty',
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Text("20000",
-                                style: TextStyle(
-                                  color: defaultColor,
-                                )),
-                            SizedBox(
-                              width: 7.0,
-                            ),
-                            Text(
-                              '23000',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
-                            Spacer(),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+                      Text(
+                          'Be sure to fill your favorite with something you like',
+                          style: TextStyle(fontSize: 15))
                     ],
                   ),
                 ),
-              ],
-            ),
-            Positioned.fill(
-              child: Align(
-                  child: ClipRect(
-                    child: Banner(
-                      message: 'DISCOUNT',
-                      textStyle: TextStyle(
-                        //fontFamily: 'Cairo',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                        letterSpacing: 0.5,
-                      ),
-                      location: BannerLocation.topStart,
-                      color: Colors.red,
-                      child: Container(
-                        height: 300.0,
-                      ),
+              )
+            : Scaffold(
+                body: ConditionalBuilder(
+                  condition: state is! ShopLoadingGetFavoritesState,
+                  builder: (context) => ListView.separated(
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, index) => BuildListProduct(
+                        ShopCupit.get(context)
+                            .favoritesModel!
+                            .data!
+                            .data![index]
+                            .product,
+                        context),
+                    separatorBuilder: (context, index) => Container(
+                      width: double.infinity,
                     ),
-                  )),
-            )
-          ],
+                    itemCount: ShopCupit.get(context)
+                        .favoritesModel!
+                        .data!
+                        .data!
+                        .length,
+                  ),
+                  fallback: (context) =>
+                      Center(child: CircularProgressIndicator()),
+                ),
+              );
+      },
+    );
+  }
+
+  Widget BuildListProduct(
+    model,
+    context, {
+    isOldPrice = true,
+  }) =>
+      Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Card(
+          elevation: 10,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Container(
+              height: 130.0,
+              child: Row(
+                children: [
+                  SizedBox(height: 100,
+                    width: 100,
+                    child: Stack(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      children: [
+                        Image(
+                          image: NetworkImage(
+                            model.image,
+                          ),
+                          height: 250.0,
+                          width: double.infinity,
+                        ),
+                        if (model.discount != 0 && isOldPrice)
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 5.0,
+                            ),
+                            color: Colors.red,
+                            child: Text(
+                              'OFFERS',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10.0,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20.0,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: Text(
+                            model.name,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(height: 1.5),
+                          ),
+                        ),
+                        Spacer(),
+                        Row(
+                          children: [
+                            Text(
+                              '${model.price.round()}',
+                              style: TextStyle(
+                                color: defaultColor,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            if (model.discount != 0 && isOldPrice)
+                              Text(
+                                '${model.oldPrice.round()}',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                            Spacer(),
+                            CircleAvatar(
+                              backgroundColor:
+                                  ShopCupit.get(context).favorites[model.id]
+                                      ? Colors.red
+                                      : Colors.grey[300],
+                              child: IconButton(
+                                onPressed: () {
+                                  ShopCupit.get(context).changeFavorites(model.id);
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 }

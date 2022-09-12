@@ -28,17 +28,16 @@ class ShopLayout extends StatelessWidget {
           appBar: AppBar(
             title: const Text("Salla"),
             actions: [
-<<<<<<< HEAD
+
               IconButton(onPressed: () {
                 navigateTo(context, const Search());
               }, icon: const Icon(Icons.search)),
-=======
+
               IconButton(
                   onPressed: () {
                     navigateTo(context, Search());
                   },
-                  icon: Icon(Icons.search)),
->>>>>>> 5b57fedc3859fb07452041e73b517208d017bf0a
+                  icon: const Icon(Icons.search)),
             ],
           ),
           body: cubit.bottomScreens[cubit.currentIndex],

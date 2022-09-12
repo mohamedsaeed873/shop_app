@@ -8,7 +8,7 @@ class ShopRegisterInitialStates extends ShopRegisterStates{}
 class ShopRegisterLoadingStates extends ShopRegisterStates{}
 
 class ShopRegisterSuccessStates extends ShopRegisterStates{
-  final ShopLoginModel loginModel;
+  final LoginModel loginModel;
 
   ShopRegisterSuccessStates(this.loginModel);
 }

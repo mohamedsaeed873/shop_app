@@ -1,4 +1,3 @@
-
 class FavoritesModel {
   bool? status;
   Null message;

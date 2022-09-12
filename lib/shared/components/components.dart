@@ -3,6 +3,41 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/layout/onBoarding/on_boarding.dart';
+import 'package:shop_app/shared/styles/colors.dart';
+
+
+Widget defaultMaterialButton({
+  required Function function,
+  required String text,
+  double width = 200,
+  double height = 40.0,
+  double radius = 3.0,
+  bool isUpperCase = true,
+  Function? onTap,
+}) =>
+    Container(
+      width: width,
+      height: height,
+      child: MaterialButton(
+        onPressed: () {
+          function();
+        },
+        child: Text(
+          isUpperCase ? text.toUpperCase() : text,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          radius,
+        ),
+        color: defaultColor,
+        //  color: background,
+      ),
+    );
 
 Widget buildBoardingItem(BoardingModel model) {
   return Column(
@@ -21,55 +56,102 @@ Widget buildBoardingItem(BoardingModel model) {
 }
 
 Widget defaultTextFormField({
+  FocusNode? focusNode,
   required TextEditingController controller,
-  required TextInputType type,
-  Function? onSubmit,
-  Function? onChange,
-  Function? onTap,
-  required Function validate,
+  required TextInputType keyboardType,
+  required String? Function(String?) validate,
   required String label,
-  required IconData prefix,
+  String? hint,
+  onTap,
+  onChanged,
+  Function(String)? onFieldSubmitted,
   bool isPassword = false,
   bool isClickable = true,
+  InputDecoration? decoration,
   IconData? suffix,
-  Function? suffixPressed,
-  Color? fillColor,
+  IconData? prefix,
+  Function? suffixPressed, required Null Function(dynamic val) onSubmit,
 }) =>
     TextFormField(
+      focusNode: FocusNode(),
+      style: TextStyle(),
+      maxLines: 1,
+      minLines: 1,
       controller: controller,
-      keyboardType: type,
-      obscureText: isPassword,
-      onFieldSubmitted: (s) {
-        onSubmit!();
-      },
-      onChanged: (o) {
-        onChange ?? '';
-      },
+      validator: validate,
       enabled: isClickable,
-      onTap: () {
-        onTap ?? '';
-      },
-      validator: (v) {
-        return validate(v);
-      },
+      onTap: onTap,
+      onFieldSubmitted: onFieldSubmitted,
+      onChanged: onChanged,
+      obscureText: isPassword,
+      keyboardType: keyboardType,
+      autofocus: false,
       decoration: InputDecoration(
-        labelText: label,
-        // labelStyle: TextStyle(color: Colors.white),
         prefixIcon: Icon(
           prefix,
-          color: Colors.black,
+          color: Colors.grey,
         ),
         suffixIcon: suffix != null
             ? IconButton(
-                onPressed: () {
-                  suffixPressed!();
-                },
-                icon: Icon(
-                  suffix,
-                ),
-              )
+          onPressed: () {
+            suffixPressed!();
+          },
+          icon: Icon(
+            suffix,
+            color: Colors.grey,
+          ),
+        )
             : null,
-        border: const OutlineInputBorder(),
+        filled: true,
+        isCollapsed: false,
+        hoverColor: Colors.red.withOpacity(0.2),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.0),
+          ),
+          borderSide: BorderSide(
+            color: defaultColor,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.0),
+          ),
+          borderSide: BorderSide(
+            color: defaultColor,
+          ),
+        ),
+        labelText: label,
+        labelStyle: TextStyle(
+          fontStyle: FontStyle.italic,
+        ),
+        hintText: hint,
+        hintStyle: TextStyle(color: Colors.white),
+        focusColor: Colors.white,
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.0),
+          ),
+          borderSide: BorderSide(
+            color: defaultColor,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.0),
+          ),
+          borderSide: BorderSide(
+            color: Colors.black,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.0),
+          ),
+          borderSide: BorderSide(
+            color: defaultColor,
+          ),
+        ),
       ),
     );
 

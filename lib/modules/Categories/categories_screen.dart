@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/shared/cubit/cubit.dart';
 import 'package:shop_app/shared/cubit/state.dart';
-import 'package:shop_app/shared/styles/colors.dart';
+
 
 import '../../model/Category/category_model.dart';
 
@@ -13,7 +13,7 @@ class Categories extends StatelessWidget {
     return BlocConsumer<ShopCupit, ShopStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        return ListView.builder(
+        return ListView.separated(
           physics: BouncingScrollPhysics(),
           itemBuilder: (context, index) =>
               CatList(
@@ -27,7 +27,16 @@ class Categories extends StatelessWidget {
               .categoriesModel!
               .data!
               .data
-              .length,
+              .length, separatorBuilder: (BuildContext context, int index) { 
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Container(
+                    width: double.infinity,
+                    height: 1,
+                    color: Colors.grey,
+                  ),
+                );
+               },
         );
       },
     );
@@ -35,44 +44,41 @@ class Categories extends StatelessWidget {
 
     Widget CatList(DataModel model, context) => Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Card(
-        elevation: 20,
-        child: Row(
-          children: [
-            Container(
-              width: 100.0,
-              height: 100.0,
-              decoration: BoxDecoration(
-             //  shape: BoxShape.v,
-                //border: Border.all(color: defaultColor, width: 1),
-                image: DecorationImage(
-                  image: NetworkImage(
-                    model.image!,
-                  ),
-                  fit: BoxFit.cover,
+      child: Row(
+        children: [
+          Container(
+            width: 100.0,
+            height: 100.0,
+            decoration: BoxDecoration(
+           //  shape: BoxShape.v,
+              //border: Border.all(color: defaultColor, width: 1),
+              image: DecorationImage(
+                image: NetworkImage(
+                  model.image!,
                 ),
+                fit: BoxFit.cover,
               ),
             ),
-            SizedBox(
-              width: 20.0,
+          ),
+          SizedBox(
+            width: 20.0,
+          ),
+          Text(
+            model.name!.toUpperCase(),
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              fontWeight: FontWeight.bold,
             ),
-            Text(
-              model.name!.toUpperCase(),
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Spacer(),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.arrow_forward_ios,
             ),
-            Spacer(),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.arrow_forward_ios,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

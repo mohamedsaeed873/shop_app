@@ -5,34 +5,34 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/model/Category/category_model.dart';
-import 'package:shop_app/model/HomeModel/home_model.dart';
-<<<<<<< HEAD
 import 'package:shop_app/shared/cubit/cubit.dart';
 import 'package:shop_app/shared/cubit/state.dart';
+import 'package:shop_app/shared/styles/colors.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+import '../../model/HomeModel/home_model.dart';
+import '../../shared/components/components.dart';
 
-=======
-
-import '../../shared/cubit/cubit.dart';
-import '../../shared/cubit/state.dart';
-import '../../shared/styles/colors.dart';
-
-class ProductsScreen extends StatelessWidget {
->>>>>>> 5b57fedc3859fb07452041e73b517208d017bf0a
+class ProductsScreen extends StatelessWidget { 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopCupit, ShopStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is ShopSuccessFavoritesState) {
+          if (state.model!.status!) {
+            ShowToast(
+              text: state.model!.message!,
+              state: ToastStates.SUCCESS,
+            );
+          } else {
+            ShowToast(
+              text: state.model!.message!,
+              state: ToastStates.ERROR,
+            );
+          }
+        }
+      },
       builder: (context, state) {
         return ConditionalBuilder(
-<<<<<<< HEAD
-          condition: ShopCupit.get(context).homeModel != null,
-          builder: (context) =>
-              productsBuilder(ShopCupit.get(context).homeModel!),
-          fallback: (context) => const Center(child: CircularProgressIndicator()),
-=======
           condition: ShopCupit.get(context).homeModel != null &&
               ShopCupit.get(context).categoriesModel != null,
           builder: (context) => productsBuilder(
@@ -40,33 +40,12 @@ class ProductsScreen extends StatelessWidget {
               ShopCupit.get(context).categoriesModel!,
               context),
           fallback: (context) => Center(child: CircularProgressIndicator()),
->>>>>>> 5b57fedc3859fb07452041e73b517208d017bf0a
         );
       },
     );
   }
 
-<<<<<<< HEAD
-  Widget productsBuilder(HomeModel model) => SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SizedBox(
-          width: double.infinity,
-          child: CarouselSlider(
-            items: model.data!.banners!
-                .map(
-                  (e) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 300,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(30),
-                        child: Image(
-                          image: NetworkImage('${e.image}'),
-=======
-  Widget productsBuilder(HomeModel model, CategoriesModel categoriesModel,
-          BuildContext context) =>
+  Widget productsBuilder(HomeModel model, CategoriesModel categoriesModel, context) =>
       SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -80,7 +59,6 @@ class ProductsScreen extends StatelessWidget {
                       (e) => Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Container(
->>>>>>> 5b57fedc3859fb07452041e73b517208d017bf0a
                           width: double.infinity,
                           height: 300,
                           child: ClipRRect(
@@ -108,45 +86,38 @@ class ProductsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 5.0,
+                  Text(
+                    'Categories',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Container(
+                    height: 140.0,
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                    child: Scrollbar(
+                      thickness: 1,
+                      child: ListView.separated(
+                        padding:
+                            EdgeInsetsDirectional.only(start: 10.0, top: 10),
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => CategoriesItem(
+                            categoriesModel.data!.data[index], context),
+                        separatorBuilder: (context, index) => SizedBox(
+                          width: 10.0,
+                        ),
+                        itemCount: categoriesModel.data!.data.length,
+                      ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Categories',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        Container(
-                          height: 100,
-                          child: ListView.separated(
-                              scrollDirection: Axis.horizontal,
-                              physics: BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return CategoriesItem(categoriesModel.data!.data[index]);
-                              },
-                              separatorBuilder: (context, index) {
-                                return SizedBox(
-                                  width: 10,
-                                );
-                              },
-                              itemCount:categoriesModel.data!.data.length),
-                        ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        Text(
-                          'New Products',
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                      ],
-                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Text(
+                    'New Products',
+                    style: Theme.of(context).textTheme.headline5,
                   ),
                   SizedBox(
                     height: 20.0,
@@ -171,132 +142,147 @@ class ProductsScreen extends StatelessWidget {
         ),
       );
 
-  Widget GridProducts(ProductModel model, context) => Stack(
-        children: [
-          Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            clipBehavior: Clip.none,
-            elevation: 10,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 16.0,
+
+  Widget GridProducts(ProductModel model, context) => InkWell(
+        onTap: () {
+        },
+        child: Stack(
+          children: [
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image(
-                    image: NetworkImage(
-                      model.image!,
-                    ),
-                    width: double.infinity,
-                    height: 150.0,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        model.name!,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 14.0, height: 1.3),
+              clipBehavior: Clip.none,
+              elevation: 20,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image(
+                      image: NetworkImage(
+                        model.image!,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            '${model.price.round()}\ LE',
-                            style: TextStyle(
-                              color: defaultColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 7.0,
-                          ),
-                          if (model.discount != 0)
+                      width: double.infinity,
+                      height: 150.0,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          model.name!,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Row(
+                          children: [
                             Text(
-                              '${model.oldPrice.round()}\LE',
+                              '${model.price.round()}\ LE',
                               style: TextStyle(
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough,
+                                color: defaultColor,
                               ),
                             ),
-                          Spacer(),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                            SizedBox(
+                              width: 7.0,
+                            ),
+                            if (model.discount != 0)
+                              Text(
+                                '${model.oldPrice.round()}\LE',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: IconButton(
+            Positioned(
+              top: 10,
+              right: 0,
+              child: IconButton(
                 onPressed: () {
-               ShopCupit.get(context).changeFavorites(model.id!);
+                  ShopCupit.get(context).changeFavorites(model.id!);
                 },
                 icon: Icon(
                   ShopCupit.get(context).favorites[model.id]
                       ? Icons.favorite
                       : Icons.favorite_border,
                   color: ShopCupit.get(context).favorites[model.id]
-                      ? defaultColor
+                      ? Colors.red
                       : Colors.grey,
                   size: 26,
-                ),),
-          ),
-          if (model.discount != 0)
-            Positioned.fill(
-              child: Align(
+                ),
+              ),
+            ),
+            if (model.discount != 0)
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment(1, -1),
                   child: ClipRect(
-                child: Banner(
-                  message: 'DISCOUNT',
-                  textStyle: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                    letterSpacing: 0.5,
-                  ),
-                  location: BannerLocation.topStart,
-                  color: Colors.red,
-                  child: Container(
-                    height: 300.0,
+                    child: Banner(
+                      message: 'OFFERS',
+                      textStyle: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        letterSpacing: 0.5,
+                      ),
+                      location: BannerLocation.topStart,
+                      color: Colors.red,
+                      child: Container(
+                        height: 100.0,
+                      ),
+                    ),
                   ),
                 ),
-              )),
-            )
-        ],
+              ),
+          ],
+        ),
       );
 
-  Widget CategoriesItem(DataModel model) => Container(
-        width: 90,
-        child: Column(
-          children: [
-            Container(
-              width: 75.0,
-              height: 72.0,
+  Widget CategoriesItem(DataModel model, context) => InkWell(
+    onTap: () {
+    },
+    child: Container(
+      width: 105,
+      child: Column(
+        children: [
+          Card(
+            elevation: 10,
+            child: Container(
+              width: 95.0,
+              height: 75.0,
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: defaultColor, width: 1),
+               // shape: BoxShape.circle,
+                //border: Border.all(color: defaultColor, width: 2),
                 image: DecorationImage(
                   image: NetworkImage(
-                      model.image!),
+                    model.image!,
+                  ),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            Text(
-              model.name!.toUpperCase(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            )
-          ],
-        ),
-      );
+          ),
+          Text(
+            model.name!.toUpperCase(),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          )
+        ],
+      ),
+    ),
+  );
+
 }
