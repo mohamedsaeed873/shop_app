@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/Auth/register/register.dart';
 import 'package:shop_app/layout/ShopApp/shopLayout.dart';
 import 'package:shop_app/shared/components/components.dart';
+import 'package:shop_app/shared/components/conest.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 
 import '../../../shared/styles/colors.dart';
@@ -31,8 +32,9 @@ class LoginScreen extends StatelessWidget {
         create: (BuildContext context) => ShopLoginCubit(),
         child: BlocConsumer<ShopLoginCubit, ShopLoginStates>(
           listener: (context, state) {
-        if (state is ShopLoginSuccessStates) {
+            if (state is ShopLoginSuccessStates) {
               if (state.loginModel!.status!) {
+<<<<<<< HEAD
                 // ignore:
                 print(state.loginModel!.message);
                 //print(state.loginModel!.data!.token);
@@ -45,12 +47,27 @@ class LoginScreen extends StatelessWidget {
                    .then((value) => {
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>const ShopLayout())),
                        });
-              } else {
-                print(state.loginModel!.message);
+=======
                 ShowToast(
-                  state: ToastStates.ERROR,
                   text: state.loginModel!.message!,
+                  state: ToastStates.SUCCESS,
                 );
+                print(state.loginModel!.message);
+                print(state.loginModel!.data!.token);
+
+                CacheHelper.savaData(
+                    key: "token", value: state.loginModel!.data!.token)
+                    .then((value) {
+                  token = state.loginModel!.data!.token;
+                  navigateToFinsh(context, ShopLayout());
+                });
+>>>>>>> 5b57fedc3859fb07452041e73b517208d017bf0a
+              } else {
+                ShowToast(
+                  text: state.loginModel!.message!,
+                  state: ToastStates.ERROR,
+                );
+                print(state.loginModel!.message);
               }
             }
           },
