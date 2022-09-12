@@ -198,11 +198,18 @@ class ProductsScreen extends StatelessWidget {
             bottom: 10,
             right: 10,
             child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+               ShopCupit.get(context).changeFavorites(model.id!);
+                },
                 icon: Icon(
-                  Icons.favorite_border,
+                  ShopCupit.get(context).favorites[model.id]
+                      ? Icons.favorite
+                      : Icons.favorite_border,
+                  color: ShopCupit.get(context).favorites[model.id]
+                      ? defaultColor
+                      : Colors.grey,
                   size: 26,
-                )),
+                ),),
           ),
           if (model.discount != 0)
             Positioned.fill(
