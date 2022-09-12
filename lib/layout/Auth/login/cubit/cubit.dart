@@ -29,7 +29,7 @@ class ShopLoginCubit extends Cubit<ShopLoginStates> {
       'password': password,
     }).then((value) {
       print(value.data);
-      navigateToFinsh(context, const ShopLayout());
+     navigateToFinsh(context, const ShopLayout());
       CacheHelper.savaData(key: 'token', value: value.data!.token);
       loginModel = ShopLoginModel.fromJson(value.data);
       emit(ShopLoginSuccessStates(loginModel!));

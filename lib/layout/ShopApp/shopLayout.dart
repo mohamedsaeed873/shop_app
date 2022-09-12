@@ -12,16 +12,24 @@ class ShopLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopCupit, ShopStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is ShopSuccessFavoritesState) {
+          if (!state.model!.status!) {
+            ShowToast(text: state.model!.message!, state: ToastStates.ERROR);
+          }
+        }
+      },
       builder: (context, state) {
         var cubit = ShopCupit.get(context);
         return Scaffold(
           appBar: AppBar(
             title: Text("Salla"),
             actions: [
-              IconButton(onPressed: () {
-                navigateTo(context, Search());
-              }, icon: Icon(Icons.search)),
+              IconButton(
+                  onPressed: () {
+                    navigateTo(context, Search());
+                  },
+                  icon: Icon(Icons.search)),
             ],
           ),
           body: cubit.bottomScreens[cubit.currentIndex],

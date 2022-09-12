@@ -6,6 +6,7 @@ import 'package:shop_app/layout/Auth/register/register.dart';
 import 'package:shop_app/layout/ShopApp/shopLayout.dart';
 import 'package:shop_app/modules/Favorites/favorite_screen.dart';
 import 'package:shop_app/shared/components/components.dart';
+import 'package:shop_app/shared/components/conest.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 
 import '../../../shared/styles/colors.dart';
@@ -25,25 +26,27 @@ class LoginScreen extends StatelessWidget {
         create: (BuildContext context) => ShopLoginCubit(),
         child: BlocConsumer<ShopLoginCubit, ShopLoginStates>(
           listener: (context, state) {
-        if (state is ShopLoginSuccessStates) {
+            if (state is ShopLoginSuccessStates) {
               if (state.loginModel!.status!) {
+                ShowToast(
+                  text: state.loginModel!.message!,
+                  state: ToastStates.SUCCESS,
+                );
                 print(state.loginModel!.message);
                 print(state.loginModel!.data!.token);
-                ShowToast(
-                  state: ToastStates.SUCCESS,
-                  text: state.loginModel!.message!,
-                );
-               CacheHelper.savaData(
-                      key: 'token', value: state.loginModel!.data!.token)
-                   .then((value) => {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ShopLayout())),
-                       });
+
+                CacheHelper.savaData(
+                    key: "token", value: state.loginModel!.data!.token)
+                    .then((value) {
+                  token = state.loginModel!.data!.token;
+                  navigateToFinsh(context, ShopLayout());
+                });
               } else {
-                print(state.loginModel!.message);
                 ShowToast(
-                  state: ToastStates.ERROR,
                   text: state.loginModel!.message!,
+                  state: ToastStates.ERROR,
                 );
+                print(state.loginModel!.message);
               }
             }
           },
