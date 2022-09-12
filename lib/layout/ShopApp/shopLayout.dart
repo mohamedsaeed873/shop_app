@@ -1,4 +1,7 @@
-import 'package:flutter/cupertino.dart';
+
+
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/modules/Search/search_screen.dart';
@@ -17,11 +20,11 @@ class ShopLayout extends StatelessWidget {
         var cubit = ShopCupit.get(context);
         return Scaffold(
           appBar: AppBar(
-            title: Text("Salla"),
+            title: const Text("Salla"),
             actions: [
               IconButton(onPressed: () {
-                navigateTo(context, Search());
-              }, icon: Icon(Icons.search)),
+                navigateTo(context, const Search());
+              }, icon: const Icon(Icons.search)),
             ],
           ),
           body: cubit.bottomScreens[cubit.currentIndex],

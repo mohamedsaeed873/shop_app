@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, avoid_types_as_parameter_names, constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/layout/onBoarding/on_boarding.dart';
@@ -8,9 +10,9 @@ Widget buildBoardingItem(BoardingModel model) {
       Expanded(child: Image(image: AssetImage('${model.image}'))),
       Text(
         '${model.title}',
-        style: TextStyle(fontSize: 24.0),
+        style: const TextStyle(fontSize: 24.0),
       ),
-      SizedBox(
+      const SizedBox(
         height: 30,
       ),
       Text('${model.body}'),
@@ -93,6 +95,12 @@ Widget defaultButton({
     Container(
       width: width,
       height: 50.0,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          radius,
+        ),
+        color: background,
+      ),
       child: MaterialButton(
         onPressed: () {
           function();
@@ -105,14 +113,9 @@ Widget defaultButton({
           ),
         ),
       ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          radius,
-        ),
-        color: background,
-      ),
     );
 
+// ignore:
 void navigateTo(context, Widget) => Navigator.push(
       context,
       MaterialPageRoute(

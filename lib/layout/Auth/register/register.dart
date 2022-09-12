@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/Auth/login/login_screen.dart';
-import 'package:shop_app/layout/ShopApp/shopLayout.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 
@@ -12,12 +11,15 @@ import '../../../shared/styles/colors.dart';
 import 'cubit/cubit.dart';
 import 'cubit/state.dart';
 
+// ignore: must_be_immutable
 class Register extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+
+  Register({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,9 @@ class Register extends StatelessWidget {
           listener: (context, state) {
             if (state is ShopRegisterSuccessStates) {
               if (state.loginModel.status!) {
+                // ignore: avoid_print
                 print(state.loginModel.message);
+                // ignore: avoid_print
                 print(state.loginModel.data!.token);
 
                 ShowToast(
@@ -37,10 +41,12 @@ class Register extends StatelessWidget {
                 CacheHelper.savaData(
                         key: 'token', value: state.loginModel.data!.token)
                     .then((value) => {navigateToFinsh(context, LoginScreen())}).catchError((error){
-                      print('mohamed${error}');
+                      // ignore: avoid_print
+                      print('mohamed$error');
 
                 });
               } else {
+                // ignore: avoid_print
                 print(state.loginModel.message);
 
                 ShowToast(
@@ -76,7 +82,7 @@ class Register extends StatelessWidget {
                                 .bodyText1!
                                 .copyWith(color: Colors.grey),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 40,
                           ),
                           defaultTextFormField(
@@ -85,13 +91,14 @@ class Register extends StatelessWidget {
                             validate: (String? val) {
                               if (val!.isEmpty) {
                                 return 'please enter your User Name';
-                              } else
+                              } else {
                                 return null;
+                              }
                             },
                             label: "User Name",
                             prefix: Icons.person,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20.0,
                           ),
                           defaultTextFormField(
@@ -100,13 +107,14 @@ class Register extends StatelessWidget {
                             validate: (String? val) {
                               if (val!.isEmpty) {
                                 return 'please enter your emailAddress';
-                              } else
+                              } else {
                                 return null;
+                              }
                             },
                             label: "Email Address",
                             prefix: Icons.email_outlined,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20.0,
                           ),
                           defaultTextFormField(
@@ -118,8 +126,9 @@ class Register extends StatelessWidget {
                             validate: (String? val) {
                               if (val!.isEmpty) {
                                 return 'please enter your password';
-                              } else
+                              } else {
                                 return null;
+                              }
                             },
                             label: "Password",
                             suffixPressed: () {
@@ -129,7 +138,7 @@ class Register extends StatelessWidget {
                             suffix: ShopRegisterCubit.get(context).suffix,
                             prefix: Icons.lock,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 30,
                           ),
                           defaultTextFormField(
@@ -138,13 +147,14 @@ class Register extends StatelessWidget {
                             validate: (String? val) {
                               if (val!.isEmpty) {
                                 return 'please enter your PhoneNumber';
-                              } else
+                              } else {
                                 return null;
+                              }
                             },
                             label: "Phone Number",
                             prefix: Icons.phone,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20.0,
                           ),
                           ConditionalBuilder(
@@ -163,19 +173,19 @@ class Register extends StatelessWidget {
                                 },
                                 isUpperCase: true,
                                 text: 'REGISTER'),
-                            fallback: (context) => Center(
+                            fallback: (context) => const Center(
                               child: CircularProgressIndicator(
                                 color: defaultColor,
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('Don\'t have an account?'),
+                              const Text('Don\'t have an account?'),
                               defaultTextButton(
                                   function: () {
                                     navigateTo(context, LoginScreen());

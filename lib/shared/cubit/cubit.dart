@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/model/HomeModel/home_model.dart';
@@ -19,12 +21,13 @@ class ShopCupit extends Cubit<ShopStates> {
   int currentIndex = 0;
 
   List<Widget> bottomScreens = [
-     HomeScreen(),
+     const HomeScreen(),
     const Categories(),
     const Favorits(),
     const Setting(),
   ];
 
+  // ignore: non_constant_identifier_names
   void ChangeBottom(int index) {
     currentIndex = index;
     emit(ShopChangeBottomNaveState());
@@ -32,6 +35,7 @@ class ShopCupit extends Cubit<ShopStates> {
 
    HomeModel? hjomeModel;
 
+  // ignore: non_constant_identifier_names
   void GetHomeData() {
     emit(ShopLoadingHomeDataState());
 

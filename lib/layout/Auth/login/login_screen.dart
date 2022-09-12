@@ -1,10 +1,13 @@
+// ignore: duplicate_ignore, 
+// ignore_for_file: avoid_print
+
+// ignore_for_file:
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/Auth/register/register.dart';
 import 'package:shop_app/layout/ShopApp/shopLayout.dart';
-import 'package:shop_app/modules/Favorites/favorite_screen.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 
@@ -13,8 +16,11 @@ import 'cubit/cubit.dart';
 import 'cubit/state.dart';
 
 
+// ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
+
+  LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +33,9 @@ class LoginScreen extends StatelessWidget {
           listener: (context, state) {
         if (state is ShopLoginSuccessStates) {
               if (state.loginModel!.status!) {
+                // ignore:
                 print(state.loginModel!.message);
-                print(state.loginModel!.data!.token);
+                //print(state.loginModel!.data!.token);
                 ShowToast(
                   state: ToastStates.SUCCESS,
                   text: state.loginModel!.message!,
@@ -36,7 +43,7 @@ class LoginScreen extends StatelessWidget {
                CacheHelper.savaData(
                       key: 'token', value: state.loginModel!.data!.token)
                    .then((value) => {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ShopLayout())),
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const ShopLayout())),
                        });
               } else {
                 print(state.loginModel!.message);
@@ -73,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                                 .bodyText1!
                                 .copyWith(color: Colors.grey),
                           ),
-                          SizedBox(
+                         const SizedBox(
                             height: 40,
                           ),
                           defaultTextFormField(
@@ -82,13 +89,14 @@ class LoginScreen extends StatelessWidget {
                             validate: (String? val) {
                               if (val!.isEmpty) {
                                 return 'please enter your emailAddress';
-                              } else
+                              } else {
                                 return null;
+                              }
                             },
                             label: "Email Address",
                             prefix: Icons.email_outlined,
                           ),
-                          SizedBox(
+                        const  SizedBox(
                             height: 20.0,
                           ),
                           defaultTextFormField(
@@ -106,8 +114,9 @@ class LoginScreen extends StatelessWidget {
                             validate: (String? val) {
                               if (val!.isEmpty) {
                                 return 'please enter your password';
-                              } else
+                              } else {
                                 return null;
+                              }
                             },
                             label: "Password",
 
@@ -118,7 +127,7 @@ class LoginScreen extends StatelessWidget {
                             suffix:  ShopLoginCubit.get(context).suffix,
                             prefix: Icons.lock,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 30,
                           ),
                           ConditionalBuilder(
@@ -134,19 +143,19 @@ class LoginScreen extends StatelessWidget {
                                 },
                                 isUpperCase: true,
                                 text: 'LOGIN'),
-                            fallback: (context) => Center(
+                            fallback: (context) => const Center(
                               child: CircularProgressIndicator(
                                 color: defaultColor,
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('Don\'t have an account?'),
+                              const Text('Don\'t have an account?'),
                               defaultTextButton(
                                   function: () {
                                     navigateTo(context, Register());

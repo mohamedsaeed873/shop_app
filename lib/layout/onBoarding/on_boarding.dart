@@ -27,6 +27,8 @@ List<BoardingModel> boardingList = [
 ];
 
 class OnBoarding extends StatefulWidget {
+  const OnBoarding({Key? key}) : super(key: key);
+
   @override
   State<OnBoarding> createState() => _OnBoardingState();
 }
@@ -59,6 +61,7 @@ class _OnBoardingState extends State<OnBoarding> {
                      setState(() {
                        isLast=true;
                      });
+                      // ignore: avoid_print
                       print("lastPage");
                       }
                     else{
@@ -66,25 +69,26 @@ class _OnBoardingState extends State<OnBoarding> {
                         setState(() {
                           isLast=false;
                         });
+                        // ignore: avoid_print
                         print("NextPage");
                       }
                     }
                   },
                   controller: boardingcControaller,
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   itemCount: 3,
                   itemBuilder: (context, index) {
                     return buildBoardingItem(boardingList[index]);
                   }),
             ),
-            SizedBox(
+            const SizedBox(
               height: 100,
             ),
             SmoothPageIndicator(
               controller: boardingcControaller,
               count: 3,
               axisDirection: Axis.horizontal,
-              effect: ExpandingDotsEffect(
+              effect: const ExpandingDotsEffect(
                 spacing: 10.0,
                 radius: 10.0,
                 dotWidth: 10.0,
@@ -94,13 +98,13 @@ class _OnBoardingState extends State<OnBoarding> {
                 activeDotColor: defaultColor,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             ),
             Row(
               children: [
-                TextButton(onPressed: submit, child: Text('Skip')),
-                Spacer(),
+                TextButton(onPressed: submit, child: const Text('Skip')),
+                const Spacer(),
                 FloatingActionButton(
                   onPressed: () {
                     if(isLast){
@@ -109,17 +113,17 @@ class _OnBoardingState extends State<OnBoarding> {
                     }
                    else{
                       boardingcControaller.nextPage(
-                          duration: Duration(
+                          duration: const Duration(
                             milliseconds: 750,
                           ),
                           curve: Curves.fastLinearToSlowEaseIn);
                     }
                   },
-                  child: Icon(Icons.arrow_forward_ios),
+                  child: const Icon(Icons.arrow_forward_ios),
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20.0,
             )
           ],

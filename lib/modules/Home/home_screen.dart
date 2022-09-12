@@ -5,11 +5,12 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/model/HomeModel/home_model.dart';
-import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/cubit/cubit.dart';
 import 'package:shop_app/shared/cubit/state.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopCupit, ShopStates>(
@@ -19,23 +20,23 @@ class HomeScreen extends StatelessWidget {
           condition: ShopCupit.get(context).homeModel != null,
           builder: (context) =>
               productsBuilder(ShopCupit.get(context).homeModel!),
-          fallback: (context) => Center(child: CircularProgressIndicator()),
+          fallback: (context) => const Center(child: CircularProgressIndicator()),
         );
       },
     );
   }
 
   Widget productsBuilder(HomeModel model) => SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Container(
+        SizedBox(
           width: double.infinity,
           child: CarouselSlider(
             items: model.data!.banners!
                 .map(
                   (e) => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Container(
+                    child: SizedBox(
                       width: double.infinity,
                       height: 300,
                       child: ClipRRect(

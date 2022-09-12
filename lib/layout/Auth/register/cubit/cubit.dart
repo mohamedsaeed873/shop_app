@@ -31,11 +31,13 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates>{
           'phone':phone,
         }
     ).then((value) {
+      // ignore: avoid_print
       print(value.data);
       navigateToFinsh(context, LoginScreen());
       registerModel= ShopLoginModel.fromJson(value.data);
       emit(ShopRegisterSuccessStates(registerModel!));
     }).catchError((error){
+      // ignore: avoid_print
       print(error.toString());
       emit(ShopRegisterErrorStates(error.toString()));
     });
@@ -44,6 +46,7 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates>{
 
   IconData suffix= Icons.visibility_outlined;
   bool ispassword=true;
+  // ignore: non_constant_identifier_names
   void ChangePasswordVisibility(){
     ispassword=!ispassword;
     suffix=ispassword?Icons.visibility_outlined

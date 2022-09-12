@@ -1,4 +1,6 @@
 
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 import '../layout/Auth/login/login_screen.dart';
@@ -7,6 +9,8 @@ import '../layout/onBoarding/on_boarding.dart';
 import '../shared/network/local/cache_helper.dart';
 
 class StartWidget extends StatelessWidget {
+  const StartWidget({Key? key}) : super(key: key);
+
 
 
   @override
@@ -22,7 +26,7 @@ class StartWidget extends StatelessWidget {
         return  LoginScreen();
       }
     } else {
-      return OnBoarding();
+      return const OnBoarding();
     }
   }
 }
