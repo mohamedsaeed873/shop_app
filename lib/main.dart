@@ -74,7 +74,7 @@ class Myapp extends StatelessWidget {
             darkTheme: darkTheme,
             themeMode: ThemeMode.light,
             debugShowCheckedModeBanner: false,
-            home:StartWidget(),
+            home:startWidget,
           );
         },
       ),
