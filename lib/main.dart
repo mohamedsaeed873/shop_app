@@ -9,6 +9,7 @@ import 'package:shop_app/shared/cubit/state.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:shop_app/shared/network/remot/dio_helper.dart';
 import 'package:shop_app/shared/styles/styles.dart';
+import 'package:shop_app/test/startWidget.dart';
 
 import 'bloc_observer.dart';
 import 'layout/Auth/login/login_screen.dart';
@@ -23,7 +24,7 @@ void main() async {
   await DioHelper.init();
   await CacheHelper.init();
 
-  bool? isDark = CacheHelper.getBoolean(key: 'isDark');
+  //bool? isDark = CacheHelper.getBoolean(key: 'isDark');
   Widget widget;
 
   bool? onBoarding = CacheHelper.getData(key: 'onBoarding');
@@ -41,15 +42,17 @@ void main() async {
 
   runApp(Myapp(
     startWidget: widget,
-    // isDark: isDark,
+     //isDark: isDark,
   ));
 }
 
 class Myapp extends StatelessWidget {
-  final bool? isDark;
+  //final bool? isDark;
   final Widget startWidget;
 
-  Myapp({Key? key, required this.startWidget, this.isDark});
+  Myapp({Key? key, required this.startWidget,
+    //this.isDark
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +61,8 @@ class Myapp extends StatelessWidget {
         BlocProvider(
             create: (context) => ShopCupit()
               ..getHomeData()
+              ..getUserData()
+              ..getCartData()
               ..getFavoritesData()
               ..getCategories()),
       ],
@@ -69,7 +74,7 @@ class Myapp extends StatelessWidget {
             darkTheme: darkTheme,
             themeMode: ThemeMode.light,
             debugShowCheckedModeBanner: false,
-            home: startWidget,
+            home:StartWidget(),
           );
         },
       ),

@@ -11,6 +11,8 @@ import 'package:shop_app/shared/styles/colors.dart';
 
 import '../../model/HomeModel/home_model.dart';
 import '../../shared/components/components.dart';
+import '../category_details/category_details.dart';
+import '../product_detalis/product_details.dart';
 
 class ProductsScreen extends StatelessWidget { 
   @override
@@ -145,6 +147,9 @@ class ProductsScreen extends StatelessWidget {
 
   Widget GridProducts(ProductModel model, context) => InkWell(
         onTap: () {
+          ShopCupit.get(context)
+              .getProductData(model.id)
+              .then((value) => navigateTo(context, ProductDetailsScreen()));
         },
         child: Stack(
           children: [
@@ -249,6 +254,8 @@ class ProductsScreen extends StatelessWidget {
 
   Widget CategoriesItem(DataModel model, context) => InkWell(
     onTap: () {
+      ShopCupit.get(context).getCategoriesDetailData(model.id!);
+      navigateTo(context, CategoryProductsScreen(model.name!));
     },
     child: Container(
       width: 105,

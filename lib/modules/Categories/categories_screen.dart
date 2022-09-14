@@ -6,6 +6,8 @@ import 'package:shop_app/shared/cubit/state.dart';
 
 
 import '../../model/Category/category_model.dart';
+import '../../shared/components/components.dart';
+import '../category_details/category_details.dart';
 
 class Categories extends StatelessWidget {
   @override
@@ -42,43 +44,49 @@ class Categories extends StatelessWidget {
     );
   }
 
-    Widget CatList(DataModel model, context) => Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        children: [
-          Container(
-            width: 100.0,
-            height: 100.0,
-            decoration: BoxDecoration(
-           //  shape: BoxShape.v,
-              //border: Border.all(color: defaultColor, width: 1),
-              image: DecorationImage(
-                image: NetworkImage(
-                  model.image!,
+    Widget CatList(DataModel model, context) => InkWell(
+      onTap: (){
+        ShopCupit.get(context).getCategoriesDetailData(model.id!);
+        navigateTo(context, CategoryProductsScreen(model.name!));
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            Container(
+              width: 100.0,
+              height: 100.0,
+              decoration: BoxDecoration(
+             //  shape: BoxShape.v,
+                //border: Border.all(color: defaultColor, width: 1),
+                image: DecorationImage(
+                  image: NetworkImage(
+                    model.image!,
+                  ),
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
               ),
             ),
-          ),
-          SizedBox(
-            width: 20.0,
-          ),
-          Text(
-            model.name!.toUpperCase(),
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(
-              fontWeight: FontWeight.bold,
+            SizedBox(
+              width: 20.0,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          Spacer(),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.arrow_forward_ios,
+            Text(
+              model.name!.toUpperCase(),
+              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-          ),
-        ],
+            Spacer(),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.arrow_forward_ios,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

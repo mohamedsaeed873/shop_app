@@ -5,6 +5,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/layout/onBoarding/on_boarding.dart';
 import 'package:shop_app/shared/styles/colors.dart';
 
+Widget myDivider() => Container(
+  width: double.infinity,
+  height: 1.0,
+  color: Colors.grey[300],
+);
+
 
 Widget defaultMaterialButton({
   required Function function,
@@ -70,7 +76,7 @@ Widget defaultTextFormField({
   InputDecoration? decoration,
   IconData? suffix,
   IconData? prefix,
-  Function? suffixPressed, required Null Function(dynamic val) onSubmit,
+  Function? suffixPressed,  Null Function(dynamic val)? onSubmit,
 }) =>
     TextFormField(
       focusNode: FocusNode(),

@@ -4,10 +4,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_app/modules/Search/search_screen.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/cubit/cubit.dart';
 import 'package:shop_app/shared/cubit/state.dart';
+
+import '../../modules/Search/search.dart';
+import '../../modules/cart/cart.dart';
 
 class ShopLayout extends StatelessWidget {
   const ShopLayout({Key? key}) : super(key: key);
@@ -30,14 +32,12 @@ class ShopLayout extends StatelessWidget {
             actions: [
 
               IconButton(onPressed: () {
-                navigateTo(context, const Search());
+                navigateTo(context,  SearchScreen());
               }, icon: const Icon(Icons.search)),
+              IconButton(onPressed: () {
+                navigateTo(context,  CartScreen());
+              }, icon: const Icon(Icons.shopping_cart)),
 
-              IconButton(
-                  onPressed: () {
-                    navigateTo(context, Search());
-                  },
-                  icon: const Icon(Icons.search)),
             ],
           ),
           body: cubit.bottomScreens[cubit.currentIndex],
